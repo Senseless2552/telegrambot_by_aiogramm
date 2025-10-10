@@ -36,11 +36,10 @@ def get_forecast_weather(city):
     data = response.json()
     if "error" in data:
         return f"❌ Город не найден: {data['error']['message']}"
-    forecast = []
+    forecast = [f'Прогноз на 5 дней в городе {data['location']['name']}, {data['location']['country']}:\n']
     try:
         for day in data['forecast']['forecastday']:
             text = (
-                f'Прогноз на 5 дней в городе {data['location']['name']}, {data['location']['country']}:\n'
                 f'День {day['date']}. \n'
                 f'🌡️ Средняя температура: {day['day']['avgtemp_c']}°C. \n'
                 f'💨 Макс. скорость ветра: {day['day']['maxwind_kph']} км\ч. \n'
