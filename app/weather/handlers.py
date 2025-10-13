@@ -1,15 +1,15 @@
 from aiogram.fsm.context import FSMContext
-from aiogram.filters import Command
+from aiogram.filters import Command, CommandStart
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram import Router, F
 
-from app.weather.get_weater import get_forecast_weather, get_current_weather
+from app.weather.get_weater import get_weather
 import app.weather.keyboard as kb
 from app.weather.state import Weather
 
 weather_router = Router()
 
-@weather_router.message(Command('weather'))
+@weather_router.message(CommandStart())
 async def command_weather_handler (message: Message, state: FSMContext):
     await state.set_state(Weather.choosed_forecast)
     await message.answer('Привет! Я погодный бот, разработанный Михеевым Романом!! Выбери пункт из меню:', reply_markup=kb.weather)
@@ -29,27 +29,17 @@ async def weather_handler(message: Message, state: FSMContext):
     city = message.text
     data = await state.get_data()
     user_choice = data.get("choosed_forecast")
-    if user_choice == "Погода сейчас":
-        result = get_current_weather(city)
-        if result.startswith(("❌", "⚠️", "error")):
-            await message.answer(
-                f"{result}\nПожалуйста, введите корректное название города:",
-            )
-        else:
-            await message.answer(result)
-            await state.clear()
-    elif user_choice == "Прогноз погоды на 5 дней":
-        result = get_forecast_weather(city)
-        if result.startswith(("❌", "⚠️", "error")):
-            await message.answer(
-                f"{result}\nПожалуйста, введите корректное название города:",
-            )
-        else:
-            await message.answer(result)
-            await state.clear()
+    result = get_weather(city, user_choice)
+    if result.startswith(("❌", "⚠️", "error")):
+        await message.answer(
+            f"{result}\nПожалуйста, введите корректное название города:",
+        )
     else:
-        await message.answer("Ошибка((((")
+        await message.answer(result)
+        await state.clear()
+
     
 @weather_router.message(F.text.in_({"Выход"}))
-async def exit_handler(message: Message):
+async def exit_handler(message: Message, state: FSMContext):
     await message.answer('Выход....', reply_markup=ReplyKeyboardRemove())
+    await state.clear()
