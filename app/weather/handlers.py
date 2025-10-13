@@ -3,7 +3,7 @@ from aiogram.filters import Command, CommandStart
 from aiogram.types import Message, ReplyKeyboardRemove
 from aiogram import Router, F
 
-from app.weather.get_weater import get_weather
+from app.weather.get_weater import get_weather, get_weather_async
 import app.weather.keyboard as kb
 from app.weather.state import Weather
 
@@ -29,13 +29,13 @@ async def weather_handler(message: Message, state: FSMContext):
     city = message.text
     data = await state.get_data()
     user_choice = data.get("choosed_forecast")
-    result = get_weather(city, user_choice)
-    if result.startswith(("❌", "⚠️", "error")):
+    result = await get_weather_async(city, user_choice)
+    if "❌" in result or "⚠️" in result:
         await message.answer(
             f"{result}\nПожалуйста, введите корректное название города:",
         )
     else:
-        await message.answer(result)
+        await message.answer(result, reply_markup=ReplyKeyboardRemove())
         await state.clear()
 
     

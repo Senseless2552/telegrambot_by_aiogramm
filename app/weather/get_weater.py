@@ -1,6 +1,7 @@
 import os
 import requests
 import asyncio
+import aiohttp
 
 from dotenv import load_dotenv
 
@@ -8,16 +9,16 @@ load_dotenv()
 api = os.getenv('API_KEY')
 base_url = 'http://api.weatherapi.com/v1'
 
-def get_weather(city, user_choice):
+
+async def get_weather_async(city, user_choice):
     if user_choice == "Погода сейчас":    
         try:
-            response = requests.get(f'{base_url}/current.json?key={api}&q={city}&lang=ru')
-        except requests.RequestException as e:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f'{base_url}/current.json?key={api}&q={city}&lang=ru') as response:
+                    data = await response.json()
+        except aiohttp.ClientError as e:
             return f"⚠️ Не удалось подключиться к сервису погоды: {e}"
-        data = response.json()
-        if "error" in data:
-            return f"❌ Город не найден: {data['error']['message']}"
-        try:   
+        try:
             text = (
                 f'Сейчас в городе {data['location']['name']}, {data['location']['country']}:\n'
                 f'🌡Температура: {data['current']['temp_c']}°C.\n'
@@ -30,14 +31,13 @@ def get_weather(city, user_choice):
             return f"⚠️ Ошибка при получении данных: {e}"
     elif user_choice == "Прогноз погоды на 5 дней":
         try:
-            response = requests.get(f'{base_url}/forecast.json?key={api}&q={city}&days=5&lang=ru')
-        except requests.RequestException as e:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f'{base_url}/forecast.json?key={api}&q={city}&days=5&lang=ru') as response:
+                    data = await response.json()
+        except aiohttp.ClientError as e:
             return f"⚠️ Не удалось подключиться к сервису погоды: {e}"
-        data = response.json()
-        if "error" in data:
-                    return f"❌ Город не найден: {data['error']['message']}"
-        forecast = [f'Прогноз на 5 дней в городе {data['location']['name']}, {data['location']['country']}:\n']
         try:
+            forecast = [f'Прогноз на 5 дней в городе {data['location']['name']}, {data['location']['country']}:\n']
             for day in data['forecast']['forecastday']:
                 text = (
                     f'День {day['date']}. \n'
@@ -48,7 +48,6 @@ def get_weather(city, user_choice):
                 forecast.append(text)
             return "\n".join(forecast)
         except KeyError as e:
-            text = 'error'
             return f"⚠️ Ошибка при получении данных: {e}"
-    
+
 
