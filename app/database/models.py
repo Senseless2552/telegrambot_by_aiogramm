@@ -15,7 +15,7 @@ class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column()
     age: Mapped[int] = mapped_column()
-    hobbies: Mapped[str] = mapped_column()
+    hobby: Mapped[str] = mapped_column()
     photo: Mapped[str] = mapped_column()
     sex: Mapped[str] = mapped_column()
     tg_id = mapped_column(BigInteger)

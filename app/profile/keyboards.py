@@ -9,3 +9,8 @@ form = InlineKeyboardMarkup(inline_keyboard=[
 exit = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text = "Выход")]
 ], resize_keyboard=True, input_field_placeholder='Выберите пункт меню.')
+
+sex = ReplyKeyboardMarkup(keyboard=[
+    [KeyboardButton(text = "Мужской")],
+    [KeyboardButton(text = "Женский")],
+    ], resize_keyboard=True, input_field_placeholder='Выберите пункт меню.')

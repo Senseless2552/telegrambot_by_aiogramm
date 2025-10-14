@@ -1,4 +1,4 @@
-from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton)
+from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton)
 
 weather = ReplyKeyboardMarkup(keyboard=[
     [KeyboardButton(text = "Погода сейчас")], [KeyboardButton(text = "Прогноз погоды на 5 дней")],

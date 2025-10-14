@@ -5,6 +5,7 @@ from aiogram import Router, F
 
 from app.weather.get_weater import get_weather_async
 import app.weather.keyboard as kb
+import app.keyboards as kbm
 from app.weather.state import Weather
 
 weather_router = Router()
@@ -22,7 +23,7 @@ async def city_handler (message: Message, state: FSMContext):
 
 @weather_router.message(F.text.in_({"Выход"}))
 async def exit_handler(message: Message, state: FSMContext):
-    await message.answer('Выход....', reply_markup=ReplyKeyboardRemove())
+    await message.answer('Выход....', reply_markup=kbm.main)
     await state.clear()
 
 @weather_router.message(Weather.choosed_forecast)
@@ -33,7 +34,7 @@ async def unknow_city_handler(message: Message, state: FSMContext):
 async def weather_handler(message: Message, state: FSMContext):
     city = message.text
     if city == "Выход":
-        await message.answer('Выход....', reply_markup=ReplyKeyboardRemove())
+        await message.answer('Выход....', reply_markup=kbm.main)
         await state.clear()
         return
     data = await state.get_data()
@@ -44,6 +45,6 @@ async def weather_handler(message: Message, state: FSMContext):
             f"{result}\nПожалуйста, введите корректное название города:",
         )
     else:
-        await message.answer(result, reply_markup=ReplyKeyboardRemove())
+        await message.answer(result, reply_markup=kbm.main)
         await state.clear()
 

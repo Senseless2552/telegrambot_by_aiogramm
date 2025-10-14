@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher
 from app.database.models import create_db
 from app.handlers import router
 from app.weather.handlers import weather_router
-from app.form.handlers import form_router
+from app.profile.handlers import form_router
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")

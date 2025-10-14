@@ -1,8 +1,9 @@
 from aiogram.types import (ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton)
 
 main = ReplyKeyboardMarkup(keyboard=[
-    [KeyboardButton(text='Погода')],[KeyboardButton(text='Мой ГитХаб')],
-    [KeyboardButton(text='Выход')],[KeyboardButton(text='Профиль')],
+    [KeyboardButton(text='Погода')],
+    [KeyboardButton(text='Профиль')],
+    [KeyboardButton(text='Мой ГитХаб')],
 ], resize_keyboard=True, one_time_keyboard=True , input_field_placeholder='Выберите пункт меню.')
 
 
