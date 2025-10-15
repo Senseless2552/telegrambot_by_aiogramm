@@ -20,10 +20,10 @@ async def get_weather_async(city, user_choice):
             return f"⚠️ Не удалось подключиться к сервису погоды: {e}"
         try:
             text = (
-                f'Сейчас в городе {data['location']['name']}, {data['location']['country']}:\n'
-                f'🌡Температура: {data['current']['temp_c']}°C.\n'
-                f'💨Скорость ветра: {data['current']['wind_kph']} км\ч.\n'
-                f'☁️Погодные условия: {data['current']['condition']['text']}.\n'
+                f"Сейчас в городе {data['location']['name']}, {data['location']['country']}:\n"
+                f"🌡Температура: {data['current']['temp_c']}°C.\n"
+                f"💨Скорость ветра: {data['current']['wind_kph']} км\ч.\n"
+                f"☁️Погодные условия: {data['current']['condition']['text']}.\n"
             )
             return text
         except KeyError as e:
@@ -40,10 +40,10 @@ async def get_weather_async(city, user_choice):
             forecast = [f'Прогноз на 5 дней в городе {data['location']['name']}, {data['location']['country']}:\n']
             for day in data['forecast']['forecastday']:
                 text = (
-                    f'День {day['date']}. \n'
-                    f'🌡️ Средняя температура: {day['day']['avgtemp_c']}°C. \n'
-                    f'💨 Макс. скорость ветра: {day['day']['maxwind_kph']} км\ч. \n'
-                    f'☁️ Погодные условия: {day['day']['condition']['text']}. \n'
+                    f"День {day['date']}. \n"
+                    f"🌡️ Средняя температура: {day['day']['avgtemp_c']}°C. \n"
+                    f"💨 Макс. скорость ветра: {day['day']['maxwind_kph']} км\ч. \n"
+                    f"☁️ Погодные условия: {day['day']['condition']['text']}. \n"
                 )
                 forecast.append(text)
             return "\n".join(forecast)
