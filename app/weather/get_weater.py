@@ -37,7 +37,7 @@ async def get_weather_async(city, user_choice):
         except aiohttp.ClientError as e:
             return f"⚠️ Не удалось подключиться к сервису погоды: {e}"
         try:
-            forecast = [f'Прогноз на 5 дней в городе {data['location']['name']}, {data['location']['country']}:\n']
+            forecast = [f"Прогноз на 5 дней в городе {data['location']['name']}, {data['location']['country']}:\n"]
             for day in data['forecast']['forecastday']:
                 text = (
                     f"День {day['date']}. \n"
